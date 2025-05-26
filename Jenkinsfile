@@ -38,20 +38,20 @@ pipeline {
         }
         
         stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    // Update deployment with new image
-                    sh "sed -i 's|image: .*|image: ${DOCKER_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG}|' k8s-deployment.yaml"
-                    
-                    // Apply Kubernetes configurations
-                    sh "kubectl apply -f k8s-deployment.yaml"
-                    sh "kubectl apply -f k8s-service.yaml"
-                    
-                    // Wait for deployment to roll out
-                    sh "kubectl rollout status deployment/portfolio-app"
-                }
-            }
+    steps {
+        script {
+            // For macOS compatibility, provide empty backup extension with -i ''
+            sh "sed -i '' 's|image: .*|image: ${DOCKER_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG}|' k8s-deployment.yaml"
+            
+            // Apply Kubernetes configurations
+            sh "kubectl apply -f k8s-deployment.yaml"
+            sh "kubectl apply -f k8s-service.yaml"
+            
+            // Wait for deployment to roll out
+            sh "kubectl rollout status deployment/portfolio-app"
         }
+    }
+}
     }
     
     post {
