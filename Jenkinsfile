@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'portfolio'
         DOCKER_TAG = "${BUILD_NUMBER}"
-        DOCKER_USERNAME = 'somnathu'  // Replace with your DockerHub username
+        // DOCKER_USERNAME = 'somnathumapathi'
     }
     
     stages {
