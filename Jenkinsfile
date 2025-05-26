@@ -56,28 +56,9 @@ pipeline {
     
     post {
         always {
-            script {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-creds', 
-                    usernameVariable: 'DOCKER_HUB_USERNAME'
-                )]) {
-                    // Cleanup Docker images
-                    sh """
-                        # Remove tagged image
-                        docker rmi ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG} || true
-                        
-                        # For latest tag, first stop and remove containers using it
-                        containers=\$(docker ps -a -q --filter ancestor=${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE}:latest)
-                        if [ -n "\$containers" ]; then
-                            docker stop \$containers || true
-                            docker rm \$containers || true
-                        fi
-                        
-                        # Then remove the image
-                        docker rmi ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE}:latest || true
-                    """
-                }
-            }
+            // Clean up Docker images
+            sh "docker rmi ${DOCKER_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG} || true"
+            sh "docker rmi ${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest || true"
         }
     }
 } 
