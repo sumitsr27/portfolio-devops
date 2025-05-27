@@ -13,7 +13,7 @@ pipeline {
                 checkout scm
             }
         } 
-        ///
+        ///wer
         stage('Build Docker Image') {
             steps {
                 script {
